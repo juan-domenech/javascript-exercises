@@ -42,3 +42,4 @@ var addAll = (function(i, sum) {
 	};
 }());
 //But that approach is probably not great for memory if the function is not used very often, because the execution context of the anonymous function has to be kept around so the inner function still has access to those variables in its closure. If it were executed a lot, though, it might actually be better since each time addAll() is invoked, you only need to put one variable in the new execution context, while the other "local" variables are continually reused from the old one.
+
