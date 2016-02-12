@@ -13,3 +13,28 @@ function sum(){
 	return totalSum;
 
 }
+
+//
+//
+
+function multiply(){
+
+	var numArguments=arguments.length
+
+	if ( numArguments < 2 ){
+		alert("Sorry: 2 or more values are required!")
+		return -1
+
+	} else {
+
+		var totalProduct = 1;
+
+    for (i = 0; i < numArguments; i++ ){
+			totalProduct = totalProduct * arguments[i];
+
+		}
+		return totalProduct;
+
+	}
+
+}
