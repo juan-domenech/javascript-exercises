@@ -18,10 +18,6 @@ _Hint: https://msdn.microsoft.com/en-us/library/2yfce773(v=vs.94).aspx_
 
 Write a function that writes in the console the multiplication table (in one column) of any number passed as parameter
 
-### Multiplications table on demand enhanced
-
-Improves the previous exercise to return as many columns as parameters are passed as parameters
-
 ### Calculation
 
 Write a program that writes in the console all the multiples of 23 less than 500 and at the end writes the sum of all of them
@@ -29,6 +25,18 @@ Write a program that writes in the console all the multiples of 23 less than 500
     Elements : 0 23 46 69 92 115 138 161 184 207 230 253 276 299 322 345 368
     391 414 437 460 483
     Sum : 5313
+
+### `max()` function
+
+Define a function max() that takes two numbers as arguments and returns the largest of them. Use the if-then-else construct available in Javascript.
+
+### `maxOfThree()` function
+
+Define a function maxOfThree() that takes three numbers as arguments and returns the largest of them.
+
+### `isVowel()` function
+
+Write a function that takes a character (i.e. a string of length 1) and returns true if it is a vowel, false otherwise.
 
 ### Hexadecimal 
 
