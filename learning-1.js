@@ -1,7 +1,25 @@
+
+
+//In this case, only the function declaration has its body hoisted to the top. The name ‘foo’ is hoisted, but the body is left behind, to be assigned during execution.
+// http://www.adequatelygood.com/JavaScript-Scoping-and-Hoisting.html
+//
+function test() {
+	foo(); // TypeError "foo is not a function"
+	bar(); // "this will run!"
+	var foo = function () { // function expression assigned to local variable 'foo'
+		alert("this won't run!");
+	}
+	function bar() { // function declaration, given the name 'bar'
+		alert("this will run!");
+	}
+}
+test();
+
+
+
 // Named Function Expressions
 //
 //You can give names to functions defined in function expressions, with syntax like a function declaration. This does not make it a function declaration, and the name is not brought into scope, nor is the body hoisted
-// http://www.adequatelygood.com/JavaScript-Scoping-and-Hoisting.html
 //
 function f(){
 	function a(){
