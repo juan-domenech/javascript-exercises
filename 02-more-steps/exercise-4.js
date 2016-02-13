@@ -26,8 +26,13 @@ for ( i in text ){
 
 	// Translate
 	translatedText += dictionary[text[i]] +' ';
-	}else{
 
+	// Leave numbers intact
+	}else if ( ! isNaN(text[i] ) ) {
+		translatedText += text[i] +' ';
+
+	// Unknown word
+	}else{
 	translatedText += '***'+text[i]+'*** ';
 
 	}
@@ -35,8 +40,7 @@ for ( i in text ){
 }
 
 // Delete last space and return
-translatedText = translatedText.slice( 0, -1 );
-return translatedText;
+return translatedText.slice( 0, -1 );
 
 
 }
