@@ -7,17 +7,20 @@ function charFreq( string ){
 
 	for (i=0; i < string.length; i++ ){
 
-		if ( obj[ string[i] ] == undefined ){
+		if ( ! obj[ string[i] ] ){
 
 			obj[ string[i] ] = 1;
 
 		}else{
 
-		obj[ string[i] ] = obj[ string[i] ] + 1;
+		obj[ string[i] ] += 1;
 
 		}
 
 	}
 	return obj;
+	//if ( keys(obj).length != 0 ){
+	//return obj;
+//}
 
 }
