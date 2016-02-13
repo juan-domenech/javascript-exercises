@@ -8,11 +8,11 @@ function findLongestWord( input ){
 
 		for ( i in input ){
 
-		value = input[i].length;
+			value = input[i].length;
 
-		if ( value > longest ){
+			if ( value > longest ){
 
-			longest = value;
+				longest = value;
 
 		}
 
