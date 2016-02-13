@@ -18,9 +18,8 @@ function charFreq( string ){
 		}
 
 	}
-	return obj;
-	//if ( keys(obj).length != 0 ){
-	//return obj;
-//}
+	if ( Object.keys(obj).length != 0 ){
+		return obj;
+	}
 
 }
