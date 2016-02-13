@@ -21,19 +21,21 @@ text = text.split(" ");
 
 for ( i in text ){
 
+	var wordToTranslate = text[i];
+
 	//Let's make sure we have that word
-	if ( dictionary[text[i]] ){
+	if ( dictionary[wordToTranslate] ){
 
 	// Translate
-	translatedText += dictionary[text[i]] +' ';
+	translatedText += dictionary[wordToTranslate] +' ';
 
 	// Leave numbers intact
-	}else if ( ! isNaN(text[i] ) ) {
-		translatedText += text[i] +' ';
+	}else if ( ! isNaN(wordToTranslate ) ) {
+		translatedText += wordToTranslate +' ';
 
 	// Unknown word
 	}else{
-	translatedText += '***'+text[i]+'*** ';
+	translatedText += '***'+wordToTranslate+'*** ';
 
 	}
 
