@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+</head>
+<body>
+
+	<script>
+
+    //Challenge: youTube JSON
+    //Using the youtube.json you'll find at the materials folder, create a webpage that:
+    //Shows the title of the video
+    //Shows a thumbnail of the video
+    //The thumbnail should also be a link to the youtube video
+    //
+
+		var file = 'youtube.json'
+
+		$.ajax({
+    	url: file,
+        dataType: "json",
+    	success: function(data) {
+
+            //console.log(data.data.items[0].title)
+            //console.log(data.data.items[0].thumbnail.hqDefault)
+            //console.log(data.data.items[0].content[5])
+
+            $( "<p><strong>Movie Title: </strong>"+data.data.items[0].title+"</p>" ).insertAfter('body')
+
+            $( "<a href='"+data.data.items[0].content[5]+"''><img src='"+data.data.items[0].thumbnail.hqDefault+"'</img></a>" ).insertAfter('p')
+
+		    }
+
+
+		});
+	</script>
+</body>
+
+
+
+</body>
+</html>
