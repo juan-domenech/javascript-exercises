@@ -10,24 +10,26 @@
 </head>
 <body>
 
+    <h1 id='top-h1'>Spotify API jQuery sandbox</h1>
+
     <form>
         <input>
-        <button>search!</button>
+        <button>search your favourite artist!</button>
     </form>
 
-    <h1 id='top-h1'></h1>
+    <h2 id='top-h2'></h2>
 
     <select id='artist-list'>
     </select>
 
-    <h2 id='top-h2'></h2>
+    <h3 id='top-h3'></h3>
 
     <ul id='response-list'></ul>
 
     <select id='album-list'>
     </select>
 
-    <h3 id='top-h3'></h3>
+    <h4 id='top-h4'></h4>
 
     <select id='track-list'>
     </select>
@@ -62,22 +64,22 @@ $("button").on("click", function(e) {
         success: function( response ) {
             //console.log ( "$.ajax minimal : %o", response.responseData.results );
 
-            $('#top-h1').html('')
             $('#top-h2').html('')
             $('#top-h3').html('')
+            $('#top-h4').html('')
             $('ul').html('')
             $('select').html('')
 
             if ( response.artists.items.length == 0 ){
                 console.log('Sorry. No artist found');
-                $('#top-h1').html('Sorry no artists found :( Please try again.')
-                $('#top-h2').html('')
+                $('#top-h2').html('Sorry no artists found :( Please try again.')
                 $('#top-h3').html('')
+                $('#top-h4').html('')
                 $('select').html('')
 
             }else if( response.artists.items.length > 1 ){
                 console.log('Multiple artists found. Rendering them all!')
-                $('#top-h1').html('Multiple artists found ('+response.artists.items.length+'). Please select one from the list:')
+                $('#top-h2').html('Multiple artists found ('+response.artists.items.length+'). Please select one from the list:')
 
                 var numResponses = response.artists.items.length;
                 var listResponses ='';
@@ -85,21 +87,23 @@ $("button").on("click", function(e) {
                     listResponses += "<option value='"+response.artists.items[i].id+"'>" + response.artists.items[i].name +"</option>"
                 }
                 $("#artist-list").html(listResponses)
-                $('#top-h2').html('')
                 $('#top-h3').html('')
+                $('#top-h4').html('')
 
 
 
             }else{
-                console.log('Exact match');
-                $('#top-h1').html('Artist: '+response.artists.items[0].name)
+                //console.log('Exact match');
+                $('#top-h2').html('One (1) artist found: '+response.artists.items[0].name)
+
+                $("#artist-list").html('<option>'+response.artists.items[0].name+'</option>')
 
                 $.ajax({
                     url: spotifyURL+'artists/'+response.artists.items[0].id+'/albums',
                     dataType: "json",
                     success: function( response ) {
 
-                        $('#top-h2').html('Albums: ('+response.items.length+')')
+                        $('#top-h3').html('Albums: ('+response.items.length+')')
 
                         var numResponses = response.items.length;
                         var listResponses ='';
@@ -129,14 +133,14 @@ $( "#artist-list" ).change(function(e) {
 
     var artistID = this.value;
 
-                //$('#top-h1').html('Artist ID '+this.value)
+                //$('#top-h2').html('Artist ID '+this.value)
 
                 $.ajax({
                     url: spotifyURL+'artists/'+artistID+'/albums',
                     dataType: "json",
                     success: function( response ) {
 
-                        $('#top-h2').html('Albums: ('+response.items.length+')')
+                        $('#top-h3').html('Albums: ('+response.items.length+')')
 
                         var numResponses = response.items.length;
                         var listResponses ='';
@@ -156,14 +160,14 @@ $( "#album-list" ).change(function(e) {
     var albumID = this.value;
     //console.log(albumID)
 
-                $('#top-h3').html('Album ID '+this.value)
+                $('#top-h4').html('Album ID '+this.value)
 
                 $.ajax({
                     url: spotifyURL+'albums/'+albumID+'/tracks',
                     dataType: "json",
                     success: function( response ) {
 
-                        $('#top-h3').html('Tracks: ('+response.items.length+')')
+                        $('#top-h4').html('Tracks: ('+response.items.length+')')
 
                         var numResponses = response.items.length;
                         var listResponses ='';
