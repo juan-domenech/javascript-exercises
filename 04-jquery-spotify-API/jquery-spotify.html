@@ -33,6 +33,8 @@
 
     <h5 id='top-h5'></h5>
 
+    <iframe src='' width='300' height='80'></iframe>
+
 <script>
 
 //
@@ -59,7 +61,7 @@ function hideFields(){
     $('#top-h5').hide()
     $('#album-list').hide()
     $('#track-list').hide()
-    $('iframe').html('<iframe src=""></iframe>')
+    $('iframe').attr("src","");
     $('iframe').hide()
     $('img').hide()
 
@@ -171,7 +173,7 @@ $( "#album-list" ).change(function(e) {
 
     // Hide unnecessary fields
     $('#top-h5').hide()
-    $('iframe').html('<iframe src=""></iframe>')
+    $('iframe').attr("src","");
     $('iframe').hide()
 
     // Extract the thumbnail URL from the option menu and paint it
@@ -216,7 +218,8 @@ $( "#track-list" ).change(function(e) {
             $('#top-h5').html('Playing 30 free seconds...')
             $('#top-h5').show()
 
-            $('#top-h5').append("<br><iframe src='"+response.preview_url+"' width='300' height='80'></iframe>")
+            //$('#top-h5').append("<br><iframe src='"+response.preview_url+"' width='300' height='80'></iframe>")
+            $('iframe').attr("src",response.preview_url);
             $('iframe').show()
 
         }
