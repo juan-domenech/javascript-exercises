@@ -76,10 +76,9 @@ hideFields();
 // We are going to need this function a couple of times...
 function renderAlbums ( artistID ){
 
-    //$('#artist-list').show
-
     hideFields();
 
+    // Albums
     $.ajax({
         url: spotifyURL+'artists/'+artistID+'/albums',
         dataType: "json",
@@ -90,6 +89,8 @@ function renderAlbums ( artistID ){
 
             var numResponses = response.items.length;
             var listResponses ='<option>Select album...</option>';
+
+            // Storing the Album ID and the Album Thumbnail URL into the Options menu (besides the Album name)
             for (var i=0; i<numResponses; i++) {
             listResponses += "<option value='"+response.items[i].id+"' data-url='"+response.items[i].images[2].url+"'>"+response.items[i].name+"</option>"
             }
@@ -109,6 +110,7 @@ $("button").on("click", function(e) {
     var $myInput = $("input");
     var requestedArtist = $myInput.val();
 
+    // Artists
     $.ajax({
         url: spotifyURL+'search?q='+requestedArtist+'&type=artist',
         dataType: "json",
@@ -133,6 +135,8 @@ $("button").on("click", function(e) {
 
                 var numResponses = response.artists.items.length;
                 var listResponses ='<option>Select artist...</option>';
+
+                // Storing the Artist ID into the option menu (besides the Artist Name)
                 for (var i=0; i<numResponses; i++) {
                     listResponses += "<option value='"+response.artists.items[i].id+"'>" + response.artists.items[i].name +"</option>"
                 }
@@ -145,6 +149,7 @@ $("button").on("click", function(e) {
                 $('#top-h2').html('One (1) artist found: '+response.artists.items[0].name)
                 $('#top-h2').show()
 
+                // Only one artist: No need to create an Option menu and we can go directly to render de Album List
                 $("#artist-list").html('<option>'+response.artists.items[0].name+'</option>')
                 renderAlbums( response.artists.items[0].id )
 
@@ -160,7 +165,7 @@ $("button").on("click", function(e) {
 // Event: Artist list selected
 $( "#artist-list" ).change(function(e) {
 
-    // Sending artist ID to renderAlbums()
+    // Sending artist ID to renderAlbums() taken it from the Options menu
     renderAlbums ( this.value )
 
 });
@@ -169,6 +174,7 @@ $( "#artist-list" ).change(function(e) {
 // Event: Album list selected
 $( "#album-list" ).change(function(e) {
 
+    // Taking the album ID stored in the Options menu
     var albumID = this.value;
 
     // Hide unnecessary fields
@@ -193,6 +199,8 @@ $( "#album-list" ).change(function(e) {
 
             var numResponses = response.items.length;
             var listResponses ='<option>Select track...</option>';
+
+            // Storing the track ID into the Options Menu (besides the track name)
             for (var i=0; i<numResponses; i++) {
                 listResponses += "<option value='"+response.items[i].id+"'>"+response.items[i].name+"</option>"
             }
@@ -208,8 +216,10 @@ $( "#album-list" ).change(function(e) {
 // Event: Track list selected
 $( "#track-list" ).change(function(e) {
 
+    // Taking track ID stored into the Options menu
     var trackID = this.value;
 
+    // Play track
     $.ajax({
         url: spotifyURL+'tracks/'+trackID,
         dataType: "json",
@@ -218,7 +228,6 @@ $( "#track-list" ).change(function(e) {
             $('#top-h5').html('Playing 30 free seconds...')
             $('#top-h5').show()
 
-            //$('#top-h5').append("<br><iframe src='"+response.preview_url+"' width='300' height='80'></iframe>")
             $('iframe').attr("src",response.preview_url);
             $('iframe').show()
 
