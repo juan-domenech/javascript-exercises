@@ -21,10 +21,10 @@
 
     <h3 id='top-h3'></h3>
 
-    <ul id='response-list'></ul>
-
     <select id='album-list'>
     </select>
+
+    <img align='middle' src=''>
 
     <h4 id='top-h4'></h4>
 
@@ -61,6 +61,7 @@ function hideFields(){
     $('#track-list').hide()
     $('iframe').html('<iframe src=""></iframe>')
     $('iframe').hide()
+    $('img').hide()
 
 }
 
@@ -73,7 +74,7 @@ hideFields();
 // We are going to need this function a couple of times...
 function renderAlbums ( artistID ){
 
-    $('#artist-list').show
+    //$('#artist-list').show
 
     hideFields();
 
@@ -88,7 +89,7 @@ function renderAlbums ( artistID ){
             var numResponses = response.items.length;
             var listResponses ='<option>Select album...</option>';
             for (var i=0; i<numResponses; i++) {
-            listResponses += "<option value='"+response.items[i].id+"'>"+response.items[i].name+"</option>"
+            listResponses += "<option value='"+response.items[i].id+"' data-url='"+response.items[i].images[2].url+"'>"+response.items[i].name+"</option>"
             }
             $("#album-list").html(listResponses)
             $('#album-list').show()
@@ -173,6 +174,13 @@ $( "#album-list" ).change(function(e) {
     $('iframe').html('<iframe src=""></iframe>')
     $('iframe').hide()
 
+    // Extract the thumbnail URL from the option menu and paint it
+    var selected = $(this).find('option:selected');
+    var albumPicture = selected.data('url');
+    $('img').attr("src",albumPicture);
+    $('img').show()
+
+    // Tracks
     $.ajax({
         url: spotifyURL+'albums/'+albumID+'/tracks',
         dataType: "json",
