@@ -35,6 +35,7 @@
 
 <script>
 
+//
 //Challenge. Spotify API
 //Create an app that:
 //Allow us to search for an artist
@@ -46,21 +47,58 @@
 //https://developer.spotify.com/web-api/search-item/
 //https://developer.spotify.com/web-api/console/get-search-item/?q=tania+bowra&type=artist#complete
 //https://api.spotify.com
+//
 
 var spotifyURL = 'https://api.spotify.com/v1/'
 
-    // Hide unnecessary fields
-    $('#top-h2').hide('')
-    $('#top-h3').hide('')
-    $('#top-h4').hide('')
-    $('#top-h5').hide('')
-    $('ul').hide('')
-    $('select').hide('')
+// Hide unnecessary fields
+function hideFields(){
+
+    $('#top-h3').hide()
+    $('#top-h4').hide()
+    $('#top-h5').hide()
+    $('#album-list').hide()
+    $('#track-list').hide()
     $('iframe').html('<iframe src=""></iframe>')
-    $('iframe').hide('')
+    $('iframe').hide()
+
+}
+
+// Hide unnecessary fields (+some extra)
+$('#top-h2').hide()
+$('select').hide()
+hideFields();
 
 
-// Search button
+// We are going to need this function a couple of times...
+function renderAlbums ( artistID ){
+
+    $('#artist-list').show
+
+    hideFields();
+
+    $.ajax({
+        url: spotifyURL+'artists/'+artistID+'/albums',
+        dataType: "json",
+        success: function( response ) {
+
+            $('#top-h3').html('Albums: ('+response.items.length+')')
+            $('#top-h3').show()
+
+            var numResponses = response.items.length;
+            var listResponses ='<option>Select album...</option>';
+            for (var i=0; i<numResponses; i++) {
+            listResponses += "<option value='"+response.items[i].id+"'>"+response.items[i].name+"</option>"
+            }
+            $("#album-list").html(listResponses)
+            $('#album-list').show()
+
+        }
+    });
+}
+
+
+// Event: Search button
 $("button").on("click", function(e) {
 
     e.preventDefault();
@@ -73,80 +111,39 @@ $("button").on("click", function(e) {
         dataType: "json",
         success: function( response ) {
 
+            // No artist found
             if ( response.artists.items.length == 0 ){
-                console.log('Sorry. No artist found');
+
                 $('#top-h2').html('Sorry no artists found :( Please try again.')
                 $('#top-h2').show()
 
-                // Hide unnecessary fields
-                $('#top-h3').hide('')
-                $('#top-h4').hide('')
-                $('#top-h5').hide('')
-                $('select').hide('')
-                $('iframe').html('<iframe src=""></iframe>')
-                $('iframe').hide('')
+                $('select').hide()
+                hideFields();
 
+            // More than one found
             }else if( response.artists.items.length > 1 ){
 
                 $('#top-h2').html('Multiple artists found ('+response.artists.items.length+'). <br> Please select one from the list:')
                 $('#top-h2').show()
 
-                // Hide unnecessary fields
-                $('#top-h3').hide('')
-                $('#top-h4').hide('')
-                $('#top-h5').hide('')
-                $('#album-list').hide()
-                $('#track-list').hide()
-                $('iframe').html('<iframe src=""></iframe>')
-                $('iframe').hide('')
+                hideFields();
 
                 var numResponses = response.artists.items.length;
-                var listResponses ='';
+                var listResponses ='<option>Select artist...</option>';
                 for (var i=0; i<numResponses; i++) {
                     listResponses += "<option value='"+response.artists.items[i].id+"'>" + response.artists.items[i].name +"</option>"
                 }
                 $("#artist-list").html(listResponses)
                 $("#artist-list").show()
 
-
+            // Exact match! Only one artist found
             }else{
 
                 $('#top-h2').html('One (1) artist found: '+response.artists.items[0].name)
                 $('#top-h2').show()
 
                 $("#artist-list").html('<option>'+response.artists.items[0].name+'</option>')
-                $('#artist-list').show
-
-                // Hide unnecessary fields
-                $('#top-h3').hide('')
-                $('#top-h4').hide('')
-                $('#top-h5').hide('')
-                $('#album-list').hide()
-                $('#track-list').hide()
-                $('iframe').html('<iframe src=""></iframe>')
-                $('iframe').hide('')
-
-
-                $.ajax({
-                    url: spotifyURL+'artists/'+response.artists.items[0].id+'/albums',
-                    dataType: "json",
-                    success: function( response ) {
-
-                        $('#top-h3').html('Albums: ('+response.items.length+')')
-                        $('#top-h3').show()
-
-                        var numResponses = response.items.length;
-                        var listResponses ='';
-                        for (var i=0; i<numResponses; i++) {
-                        listResponses += "<option value='"+response.items[i].id+"'>"+response.items[i].name+"</option>"
-                        }
-                        $("#album-list").html(listResponses)
-                        $('#album-list').show()
-
-
-                    }
-
-                });
+                renderAlbums( response.artists.items[0].id )
 
             }
 
@@ -157,51 +154,24 @@ $("button").on("click", function(e) {
 });
 
 
-// Artist list selected
+// Event: Artist list selected
 $( "#artist-list" ).change(function(e) {
 
-    var artistID = this.value;
+    // Sending artist ID to renderAlbums()
+    renderAlbums ( this.value )
 
-    //$('#top-h2').html('Artist ID '+this.value)
-
-    // Hide unnecessary fields
-    $('#top-h4').hide()
-    $('#top-h5').hide('')
-    $('#track-list').hide()
-    $('iframe').html('<iframe src=""></iframe>')
-    $('iframe').hide('')
-
-    $.ajax({
-        url: spotifyURL+'artists/'+artistID+'/albums',
-        dataType: "json",
-        success: function( response ) {
-
-            $('#top-h3').html('Albums: ('+response.items.length+')')
-            $('#top-h3').show()
-
-            var numResponses = response.items.length;
-            var listResponses ='';
-            for (var i=0; i<numResponses; i++) {
-                listResponses += "<option value='"+response.items[i].id+"'>"+response.items[i].name+"</option>"
-            }
-            $("#album-list").html(listResponses)
-            $('#album-list').show()
-
-        }
-    });
 });
 
 
-// Album list selected
+// Event: Album list selected
 $( "#album-list" ).change(function(e) {
 
     var albumID = this.value;
 
     // Hide unnecessary fields
-    $('#top-h5').hide('')
+    $('#top-h5').hide()
     $('iframe').html('<iframe src=""></iframe>')
-    $('iframe').hide('')
-
+    $('iframe').hide()
 
     $.ajax({
         url: spotifyURL+'albums/'+albumID+'/tracks',
@@ -212,14 +182,12 @@ $( "#album-list" ).change(function(e) {
             $('#top-h4').show()
 
             var numResponses = response.items.length;
-            var listResponses ='';
+            var listResponses ='<option>Select track...</option>';
             for (var i=0; i<numResponses; i++) {
                 listResponses += "<option value='"+response.items[i].id+"'>"+response.items[i].name+"</option>"
             }
             $("#track-list").html(listResponses)
             $('#track-list').show()
-
-            //$('#top-h4').append("<img src='"+response.album.images[1].url+"'</a>")
 
         }
     });
@@ -227,7 +195,7 @@ $( "#album-list" ).change(function(e) {
 });
 
 
-// Track list selected
+// Event: Track list selected
 $( "#track-list" ).change(function(e) {
 
     var trackID = this.value;
@@ -237,12 +205,8 @@ $( "#track-list" ).change(function(e) {
         dataType: "json",
         success: function( response ) {
 
-            //$('#top-h5').html('Name: '+response.name)
-            $('#top-h5').html('Playing...')
+            $('#top-h5').html('Playing 30 free seconds...')
             $('#top-h5').show()
-
-            //$('#top-h5').append("<iframe href='"+response.preview_url+"'><br><br>Click here to play a free 30 Seconds demo!</a></iframe>")
-            console.log("response.preview_url:",response.preview_url)
 
             $('#top-h5').append("<br><iframe src='"+response.preview_url+"' width='300' height='80'></iframe>")
             $('iframe').show()
